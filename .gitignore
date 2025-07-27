@@ -1,0 +1,10 @@
+# Python
+venv/
+__pycache__/
+
+# Node.js
+node_modules/
+build/
+
+# System files
+.DS_Store
