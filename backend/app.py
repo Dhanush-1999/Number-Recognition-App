@@ -3,21 +3,25 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from tensorflow import keras
 import numpy as np
-# --- START OF FIX ---
-# Added ImageDraw to the import list
 from PIL import Image, ImageDraw, ImageOps, ImageChops
-# --- END OF FIX ---
 import json
 
+# --- START OF FIX ---
+# Get the absolute path of the directory where this script is located
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+# Create the full path to the model file, ensuring it's in the same directory
 MODEL_PATH = os.path.join(BASE_DIR, 'mnist_model.h5')
+# --- END OF FIX ---
 
+# Tell Flask where to find the static React files
 app = Flask(__name__, static_folder='build/static')
 CORS(app)
 
+# Load the model using the new, reliable path
 model = keras.models.load_model(MODEL_PATH)
 print("✅ Model loaded successfully from:", MODEL_PATH)
 
+# Your /predict API endpoint (no changes needed here)
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -57,6 +61,7 @@ def predict():
         print(f"An error occurred: {e}")
         return jsonify({'error': str(e)}), 500
 
+# Route to serve the React application (no changes needed here)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
