@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ReactSketchCanvas } from 'react-sketch-canvas'; // New import
+import { ReactSketchCanvas } from 'react-sketch-canvas'; 
 import axios from 'axios';
 import './App.css';
 
@@ -15,7 +15,7 @@ function App() {
 
   const handleClear = () => {
     if (canvasRef.current) {
-      canvasRef.current.clearCanvas(); // Use the new clear method
+      canvasRef.current.clearCanvas(); 
     }
     setPrediction(null);
     setIsEmpty(true);
@@ -23,15 +23,14 @@ function App() {
 
   const handlePredict = async () => {
     if (canvasRef.current) {
-      // Use the new export method to get a base64 image string
       const imageData = await canvasRef.current.exportImage('png');
       
       setIsLoading(true);
       setPrediction(null);
 
       try {
-        const response = await axios.post('[https://pixel-mind-backend.onrender.com/predict](https://pixel-mind-backend.onrender.com/predict)', {
-          imageData: imageData // Send the base64 image data
+        const response = await axios.post('https://number-recognition-app.onrender.com/predict', {
+          imageData: imageData 
         });
         setPrediction(response.data.prediction);
       } catch (error) {
