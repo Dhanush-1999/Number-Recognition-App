@@ -29,7 +29,7 @@ function App() {
       setPrediction(null);
 
       try {
-        const response = await axios.post('https://number-recognition-app.onrender.com/predict', {
+        const response = await axios.post('http://localhost:5000/predict', {
           imageData: imageData 
         });
         setPrediction(response.data.prediction);
