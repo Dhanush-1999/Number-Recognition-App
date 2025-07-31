@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
-import CanvasDraw from 'react-canvas-draw';
+import { ReactSketchCanvas } from 'react-sketch-canvas'; // New import
 import axios from 'axios';
 import './App.css';
 
 function App() {
   const [prediction, setPrediction] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(true); 
+  const [isEmpty, setIsEmpty] = useState(true);
   const canvasRef = useRef(null);
 
   const handleDrawChange = () => {
@@ -15,7 +15,7 @@ function App() {
 
   const handleClear = () => {
     if (canvasRef.current) {
-      canvasRef.current.clear();
+      canvasRef.current.clearCanvas(); // Use the new clear method
     }
     setPrediction(null);
     setIsEmpty(true);
@@ -23,14 +23,15 @@ function App() {
 
   const handlePredict = async () => {
     if (canvasRef.current) {
-      const drawingData = canvasRef.current.getSaveData();
-
+      // Use the new export method to get a base64 image string
+      const imageData = await canvasRef.current.exportImage('png');
+      
       setIsLoading(true);
       setPrediction(null);
 
       try {
-        const response = await axios.post('http://localhost:5000/predict', {
-         imageData : drawingData
+        const response = await axios.post('[https://pixel-mind-backend.onrender.com/predict](https://pixel-mind-backend.onrender.com/predict)', {
+          imageData: imageData // Send the base64 image data
         });
         setPrediction(response.data.prediction);
       } catch (error) {
@@ -44,17 +45,17 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Draw a Digit</h1>
+      <h1>Pixel-Mind</h1>
       <div className="canvas-container">
-        <CanvasDraw
+        <ReactSketchCanvas
           ref={canvasRef}
-          brushColor="black"
-          brushRadius={10}
-          lazyRadius={0}
-          canvasWidth={280}
-          canvasHeight={280}
-          gridColor="rgba(255, 255, 255, 0)"
-          onChange={handleDrawChange} 
+          strokeWidth={15}
+          strokeColor="black"
+          canvasColor="white"
+          height="280px"
+          width="280px"
+          onChange={handleDrawChange}
+          className="canvas"
         />
       </div>
       <div className="button-container">
