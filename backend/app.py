@@ -3,12 +3,14 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from tensorflow import keras
 import numpy as np
-from PIL import Image, ImageOps, ImageChops
+# --- START OF FIX ---
+# Added ImageDraw to the import list
+from PIL import Image, ImageDraw, ImageOps, ImageChops
+# --- END OF FIX ---
 import json
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, 'mnist_model.h5')
-
 
 app = Flask(__name__, static_folder='build/static')
 CORS(app)
