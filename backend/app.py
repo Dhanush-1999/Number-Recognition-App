@@ -5,8 +5,10 @@ from tensorflow import keras
 import numpy as np
 from PIL import Image, ImageOps, ImageChops
 import json
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, 'mnist_model.h5')
+
 
 app = Flask(__name__, static_folder='build/static')
 CORS(app)
@@ -52,6 +54,7 @@ def predict():
     except Exception as e:
         print(f"An error occurred: {e}")
         return jsonify({'error': str(e)}), 500
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
